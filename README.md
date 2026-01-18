@@ -1,146 +1,107 @@
-# Liga MX Data Pipeline & Feature Engineering
+# Probabilistic Football Modeling Pipeline (Liga MX)
 
-This project focuses on building a robust and scalable data processing pipeline for Liga MX match data using Python.
+This project focuses on building a **robust and interpretable data pipeline** for probabilistic football modeling using Liga MX match data.
 
-The main goal is not just model training, but the creation of a **clean, well-defined dataset and feature engineering system** that can later be consumed by predictive models.
+The objective is **not** to predict exact scores, but to design a clean, reusable, and football-aware dataset that can support **probabilistic analysis and decision-making**.
 
-## Project Objectives
-- Extract and structure Liga MX match statistics
-- Design and formalize football-related features (form, momentum, performance trends)
-- Build a reusable data processing pipeline
-- Prepare high-quality datasets for future machine learning models
+---
 
-## Current Focus
-The project is currently centered on:
-- Data ingestion and transformation
-- Feature definition and validation
-- Improving data consistency and football interpretability
+## 🎯 Project Goals
 
-Model development is treated as a downstream consumer of the data pipeline.
+- Build a structured **pre-match data pipeline**
+- Design football-informed features (form, momentum, relative strength)
+- Ensure data consistency and interpretability
+- Produce datasets suitable for **probabilistic models**, not just point predictions
 
-## Tech Stack
-- Python
-- Pandas / NumPy
-- Custom data processing modules
+Models are treated as **downstream consumers** of the data pipeline.
 
-## Project Status
-🚧 Work in progress — actively expanding feature engineering and pipeline robustness.
+---
 
-## Motivation
-This project is part of a long-term learning path focused on applied data science, machine learning, and real-world football analytics.
+## ⚙️ Current Scope
 
-## Objective updates
-Build a professional data pipeline for football, focused on the probabilistic estimation of results, rather than the deterministic prediction of scores.
-The main focus is on:
-  -pre-match feature engineering
-  -design of reproducible datasets
-  -football interpretability
-  -scalability towards more advanced probabilistic models
+- **Competition:** Liga MX  
+- **Season:** Clausura 2024  
+- **Granularity:** One record per match (home vs away)  
+- **Time window:** Last 5 matches (rolling)
 
-Football is a sport with a high element of chance, so predicting exact results is neither a realistic nor a professional goal. Instead, this project takes an approach of:
-  ~Probabilistic modeling, estimating the probability of events (e.g., home team win) given pre-match conditions.
+Using a single season helps reduce structural noise caused by major changes in squads, coaches, and context.
 
-## Current scope of the project
-~Competition: Liga MX
-~Season used: Clausura 2024
-~Time frame: last 5 matches
-~Granularity: one record per match (home vs away)
-Using a single season avoids introducing structural noise caused by significant changes between seasons (squads, coaches, context).
-## Data Pipeline
-1. Data ingestion and base structure
-Each match is initially represented with two records:
-one per team
-including goals, home/away indicator, and match date
+---
 
-2. Pre-match feature engineering
-~Points
-Points obtained per match:
-  Win = 3
-  Draw = 1
-  Loss = 0
+## 🧠 Feature Engineering (Pre-Match)
 
-~Form (Team Form)
-Measures a team’s recent average performance.
-Definition:
-Form
-  Form=3n1​∑pointslast n​
-Window: last 5 matches
-Range: [0, 1]
-Interpretation:
-high values → strong recent performance
-low values → poor recent performance
+Each match is represented with separate features for home and away teams:
 
-~Momentum (Performance Trend)
-Measures the direction of recent performance.
-Definition:
-Slope of a simple linear regression over points from the last 5 matches.
-Interpretation:
-Momentum > 0 → improving team
-Momentum < 0 → declining team
-This metric is intentionally more volatile than Form.
+- `home_form`, `away_form`  
+- `home_momentum`, `away_momentum`
 
-3. Pre-match dataset (home vs away)
+Relative features are also included:
 
-Each row in the final dataset represents one match, with separate features for home and away teams:
+- `form_diff`  
+- `momentum_diff`
 
-  -home_form
-  -away_form
-  -home_momentum
-  -away_momentum
+**Form** captures recent performance level, while  
+**Momentum** captures the direction of recent performance (trend).
 
-Additionally, relative features are included:
+All features are computed strictly using **pre-match information**.
 
-  -form_diff
-  -momentum_diff
+---
 
-4. Explicit home advantage feature
-
-An explicit feature is added:
-
-home_advantage = 1
-
-This allows the model to learn a baseline home advantage offset, a standard practice in probabilistic football models.
-
-## Target Definition
-
-The project uses a binary probabilistic target.
+## 🎯 Target Definition
 
 Current target:
-home_win = 1 → home team wins
-home_win = 0 → draw or away win
 
-This design is:
+- `home_win = 1` → home team wins  
+- `home_win = 0` → draw or away win  
 
-  -simple
-  -robust
-  -scalable to:
-    W / D / L classification
-  -goal-based (Poisson) models
-  -Bayesian approaches
+This setup is intentionally simple and scalable to:
+- multi-class outcomes (W / D / L)
+- goal-based probabilistic models
+- Bayesian or hierarchical approaches
 
-## Feature Validation (EDA)
+---
 
-Before modeling, features were validated through:
+## 📊 Modeling Philosophy
 
-  -distribution analysis
-  -range checks
-  -football-based sanity checks
+Football is a high-variance sport.  
+Predicting exact results is neither realistic nor professional.
 
-Results:
-  -Form → stable and well-behaved
-  -Momentum → informative but higher variance
-  -Relative features centered around zero → no evident bias
+This project focuses on:
+- **probability estimation**
+- **calibration and reliability**
+- **zone-based and ranking-based interpretations**
 
-## What This Project Does NOT Do (by design)
+Accuracy alone is not treated as a sufficient metric.
 
--Does not predict exact scorelines
--Does not use deep learning
--Does not prematurely optimize models
--Does not include post-match information in features
+---
 
-## Next Steps
+## 🔬 Validation & Analysis
 
-- Train a baseline probabilistic model
-- Evaluate probability calibration
-- Extend to goal-based models
--Add advanced features (home/away splits, attack/defense)
+Features and model outputs are validated through:
+- distribution analysis
+- sanity checks with football logic
+- probability bins and reliability curves
+
+This ensures the model’s probabilities are **meaningful**, not just numerically correct.
+
+---
+
+## 🚧 Project Status
+
+Work in progress.
+
+Current focus areas:
+- feature validation and robustness
+- probability calibration
+- zone-based interpretation of predictions
+
+---
+
+## 🔜 Next Steps
+
+- Compare probabilistic models (logistic regression, trees, SVM)
+- Extend to multi-output modeling:
+  - match outcome probability
+  - match intensity (active vs low-tempo games)
+- Introduce historical and contextual adjustments
+
