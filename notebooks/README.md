@@ -1,8 +1,8 @@
-# 📒 Notebooks – Probabilistic Modeling (Liga MX)
+# Notebooks – Probabilistic Modeling (Liga MX)
 
-This folder contains the **core analytical notebooks** used throughout the development of the Liga MX probabilistic modeling project.
+This folder contains the core analytical notebooks used throughout the development of the Liga MX probabilistic modeling project.
 
-The notebooks are intentionally structured to reflect the **conceptual evolution of the project**, from baseline modeling to temporal validation and probabilistic evaluation.  
+The notebooks are intentionally structured to reflect the **conceptual evolution of the project**, from baseline modeling to probabilistic evaluation.
 They are not isolated experiments, but part of a coherent modeling narrative.
 
 ---
@@ -12,7 +12,7 @@ They are not isolated experiments, but part of a coherent modeling narrative.
 ### 01_baseline_logistic_regression.ipynb  
 **Probabilistic Baseline – Calibrated Logistic Regression**
 
-This notebook establishes the **baseline probabilistic model** for the project.
+This notebook establishes the baseline probabilistic model for the project.
 
 **Purpose:**
 - Define a strong, interpretable probabilistic reference
@@ -21,27 +21,34 @@ This notebook establishes the **baseline probabilistic model** for the project.
 
 **Key aspects:**
 - Logistic Regression with pre-match features
+- Feature set intentionally limited to robust, interpretable signals:
+  - Weighted form
+  - Momentum
+  - Home advantage
 - Probability calibration (Platt / isotonic when applicable)
 - Reliability curves and sanity checks
 - Interpretation aligned with football logic
 
-This baseline is treated as a **non-negotiable reference point** for evaluation.
+This baseline is treated as a **non-negotiable reference point**.
+The pre-match feature engineering phase is intentionally **closed at this stage** to preserve temporal stability and interpretability.
 
 ---
 
 ### 02_exploration_tree.ipynb  
 **Decision Trees – Exploratory Modeling**
 
-This notebook explores **tree-based models** to evaluate:
+This notebook explores tree-based models to evaluate:
 
 - Non-linear decision boundaries
 - Feature interaction effects
-- Interpretability trade-offs vs probabilistic stability
+- Threshold behavior in mid-probability regions
 
 **Focus:**
 - Exploratory analysis
 - Understanding model behavior
-- Not intended as a final production model
+- Identifying where linear models reach their limits
+
+This notebook is **not intended as a final production model**, but as a diagnostic tool to analyze the mid-probability (“gray”) zone.
 
 ---
 
@@ -52,35 +59,17 @@ This notebook evaluates SVMs as an alternative modeling approach.
 
 **Focus:**
 - Margin-based classification
+- Sensitivity to feature scaling
 - Stability across probability regions
-- Sensitivity to feature scaling and class separation
 
-The goal is **conceptual comparison**, not optimization.
-
----
-
-### 04_expanding_window.ipynb  
-**Temporal Cross-Validation – Expanding Window**
-
-This notebook implements the **core validation strategy** of the project.
-
-**Why this matters:**
-Football data is temporal.  
-Random splits introduce leakage and unrealistic performance estimates.
-
-**Implemented approach:**
-- Expanding window cross-validation
-- Train on past matches → validate on future matches
-- Season-aware evaluation
-
-This notebook defines the **evaluation backbone** used by the project.
+The goal is **conceptual comparison**, not optimization or deployment.
 
 ---
 
-### 05_evaluation_model.ipynb  
+### 04_evaluation_model.ipynb  
 **Probabilistic Evaluation & Reliability Analysis**
 
-This notebook focuses exclusively on **probability quality evaluation**.
+This notebook focuses exclusively on probability quality evaluation.
 
 **Key analyses:**
 - Probability bins (bucket-based evaluation)
@@ -88,7 +77,9 @@ This notebook focuses exclusively on **probability quality evaluation**.
 - Brier score and log loss by probability zone
 - Identification of reliable vs unreliable regions
 
-This notebook is intentionally analytical and reflective, serving as a **learning and validation artifact**.
+Special attention is given to the **mid-probability range (≈0.3–0.6)**, which is treated as a natural area of uncertainty rather than a modeling defect.
+
+This notebook consolidates the evaluation logic used throughout the project and serves as the main validation artifact.
 
 ---
 
@@ -96,18 +87,19 @@ This notebook is intentionally analytical and reflective, serving as a **learnin
 
 Across all notebooks, the project follows these principles:
 
-- Football is a **high-variance system**
+- Football is a high-variance system
 - Exact result prediction is not the objective
 - Well-calibrated probabilities are more valuable than accuracy
-- Evaluation must be temporal, interpretable, and football-aware
-
-Models are treated as **consumers of a robust data pipeline**, not the center of the system.
+- Evaluation must be interpretable and football-aware
+- Linear models define the probabilistic baseline
+- Non-linear models are explored to understand uncertainty, not eliminate it
+- Models are consumers of a robust data pipeline, not the center of the system
 
 ---
 
 ## 🚧 Notes on Structure
 
-Some notebooks are exploratory by design.  
+Some notebooks are exploratory by design.
 Others are closer to final, portfolio-ready artifacts.
 
 This separation is intentional and reflects:
@@ -119,11 +111,9 @@ This separation is intentional and reflects:
 
 ## 🔜 Next Steps
 
-- Feature robustness and optimization
-- Zone-based probability refinement
+- Exploration of non-linear models to better characterize mid-probability regions
+- Zone-based probability analysis and decision framing
 - Model comparison under calibrated settings
-- Extension to multi-output probabilistic modeling
+- Extension to more expressive probabilistic modeling approaches
 
----
-
-*This folder documents not only results, but the reasoning behind them.*
+This folder documents **not only results, but the reasoning behind them**.
