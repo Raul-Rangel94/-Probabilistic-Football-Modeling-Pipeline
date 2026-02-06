@@ -118,7 +118,7 @@ Based on empirical evaluation and calibration analysis, the project adopts a **f
 - The role and limits of auxiliary signals  
 - When calibrated probabilities may be used  
 
-📄 See: **[`PROBABILITY_POLICY.md`](.docs/probability_policy.md)**
+📄 See: **[`PROBABILITY_POLICY.md`](docs/probability_policy.md)**
 
 This policy acts as a **technical contract** governing all downstream interpretation and ensures disciplined, reproducible probability usage.
 
