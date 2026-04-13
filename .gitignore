@@ -1,0 +1,9 @@
+# Ignore everything by default
+*
+
+# But keep the gitignore itself so this configuration is preserved
+!.gitignore
+
+# Track only the notebooks folder and its contents
+!notebooks/
+!notebooks/**
